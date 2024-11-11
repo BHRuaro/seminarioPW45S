@@ -1,6 +1,14 @@
+<p align="center">
+  <a href="https://pt.quarkus.io">
+    <img src="https://quarkus.io/assets/images/brand/quarkus_icon_1024px_default.png" alt="Quarkus" width="150"/>
+  </a>
+</p>
+
+
 # Seminario PW45S
 - Este projeto foi desenvolvido para a disciplina de Tópicos Avançados em Programação Web, Curso de Tecnologia em Análise e Desenvolvimento de Sistema da Universidade Técnológica Federal do Paraná - Campus Pato Branco.
 - O objetivo é desenvolver um sistema de CRUD básico de uma entidade Pessoa utilizando o framework Quarkus.
+
 
 
 ## Requisitos
@@ -58,6 +66,7 @@ quarkus.flyway.out-of-order=true
 
 ## Desenvolvimento
 
+### Entidade Pessoa
 A entidade Pessoa terá os seguintes atributos: nome, cpf, telefone, rua, numero, complemento, bairro, cep, cidade, estado.
 Para ser criada a  tabela no banco de dados, deve ser criado o pacote `db/migration`, dentro do pacote resources, e o arquivo `V1__create_table_pessoa.sql` no pacote recém criado, com o seguinte conteúdo:
 ```
@@ -76,5 +85,64 @@ CREATE TABLE pessoa (
 );
 ``` 
 Para a entidade Pessoa, será criado o pacote `model` e a classe `Pessoa` com os atributos e métodos getters e setters.
+A classe deve conter a anotação `@Entity` para ser mapeada como uma entidade JPA e a anotação `@Table` para definir o nome da tabela no banco de dados, que é "pessoa".
+Juntamente às anotações do Lombok, a declaração da classe fica da seguinte forma:
+```
+@Table(name = "pessoa")
+@Entity
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Pessoa {
+```
+Os atributos da entidade pessoa devem ser criados conforme a tabela do banco de dados, onde cada atributo é referenciado a uma coluna.
+Para isso, ao declarar os atributos, deve ser utilizada a anotação `@Column` para definir o nome da coluna no banco de dados.
+O `id` deve ser declarado informadno a anotação `@Id` e `@GeneratedValue(strategy = GenerationType.IDENTITY)` para ser gerado automaticamente.
+```
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "sequence_id_pessoa", sequenceName = "sequence_pessoa")
+    @Column(name = "id")
+    private Integer id;
+```
+Os demais atributos devem ser declarados conforme a tabela do banco de dados. Exemplo:
+```
+    @Column(name = "nome")
+    private String nome;
+```
+
+### Repositório Pessoa
+
+Para o repositório da entidade Pessoa será criado o pacote `repository` e a interface `PessoaRepository` que extende a interface 'JPARepository' do Spring Data JPA.
+Como o Quarkus é compatível baseado no framework Spring, é possível utilizar o Spring Data JPA e diversas outras funcionalidades do Spring.
+
+
+### Serviço Pessoa
+
+Para o serviço da entidade Pessoa será criado o pacote `service` e a classe `PessoaService` que contém os métodos de CRUD da entidade Pessoa.
+Os métodos de CRUD são:
+C - Create: método `salvar` que recebe um objeto Pessoa e retorna um objeto Pessoa.
+R - Read: método `listar` que retorna uma lista de objetos Pessoa.
+U - Update: método `atualizar` que recebe um objeto Pessoa e retorna um objeto Pessoa.
+D - Delete: método `deletar` que recebe um objeto Pessoa e retorna um objeto Pessoa.
+
+A leitura é realizada em dois métodos, onde um retorna uma lista de objetos Pessoa e o outro retorna um objeto Pessoa conforme o id informado.
+```
+        public Pessoa getById(Long id) {
+            return pessoaRepository.findById(id).get();
+        }
+
+        public List<Pessoa> getAll() {
+            return pessoaRepository.findAll();
+        }
+```
+É necessário adicionar a anotação '@RequestScoped' para definir que o ciclo de vida de um objeto seja limitado a uma requisição.
+Os métodos realizam a chamada do repositório para realizar as operações no banco de dados.
+
+### Recurso Pessoa
+O pacote de recurso é responsável por receber as requisições HTTP e chamar os métodos do serviço.
+
 
 ## Execução

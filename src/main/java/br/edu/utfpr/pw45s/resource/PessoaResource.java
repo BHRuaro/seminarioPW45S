@@ -1,6 +1,6 @@
 package br.edu.utfpr.pw45s.resource;
 
-import br.edu.utfpr.pw45s.controller.PessoaController;
+import br.edu.utfpr.pw45s.service.PessoaService;
 import br.edu.utfpr.pw45s.model.Pessoa;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,7 +16,7 @@ import java.util.List;
 public class PessoaResource {
 
     @Inject
-    PessoaController pessoaController;
+    PessoaService pessoaService;
 
     @POST
     @Path("/create")
@@ -25,7 +25,7 @@ public class PessoaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Pessoa pessoa) {
         try {
-            pessoaController.create(pessoa);
+            pessoaService.create(pessoa);
             return Response.ok(pessoa.getId()).build();
         }catch (Exception e){
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class PessoaResource {
     @Produces("application/json")
     public Response update(Pessoa pessoa) {
         try {
-            pessoaController.update(pessoa);
+            pessoaService.update(pessoa);
             return Response.ok(pessoa).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +54,7 @@ public class PessoaResource {
     @Produces("application/json")
     public void delete(@PathParam("id") Long id) {
         try {
-            pessoaController.delete(id);
+            pessoaService.delete(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,7 +66,7 @@ public class PessoaResource {
     @Produces("application/json")
     public Pessoa getById(@PathParam("id") Long id) {
         try {
-            return pessoaController.getById(id);
+            return pessoaService.getById(id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -79,7 +79,7 @@ public class PessoaResource {
     @Produces("application/json")
     public List<Pessoa> getAll() {
         try {
-            return pessoaController.getAll();
+            return pessoaService.getAll();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

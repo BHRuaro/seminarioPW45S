@@ -1,4 +1,4 @@
-package br.edu.utfpr.pw45s.controller;
+package br.edu.utfpr.pw45s.service;
 
 import br.edu.utfpr.pw45s.model.Pessoa;
 import jakarta.enterprise.context.RequestScoped;
@@ -8,7 +8,7 @@ import br.edu.utfpr.pw45s.repository.PessoaRepository;
 import java.util.List;
 
 @RequestScoped
-public class PessoaController {
+public class PessoaService {
 
     @Inject
     protected PessoaRepository pessoaRepository;
