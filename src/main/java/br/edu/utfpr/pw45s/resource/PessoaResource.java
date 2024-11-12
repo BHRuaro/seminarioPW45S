@@ -2,16 +2,15 @@ package br.edu.utfpr.pw45s.resource;
 
 import br.edu.utfpr.pw45s.service.PessoaService;
 import br.edu.utfpr.pw45s.model.Pessoa;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 @Path("/pessoa")
 public class PessoaResource {
 
@@ -20,7 +19,6 @@ public class PessoaResource {
 
     @POST
     @Path("/create")
-    @Transactional
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Pessoa pessoa) {
@@ -35,7 +33,6 @@ public class PessoaResource {
 
     @PUT
     @Path("/update")
-    @Transactional
     @Consumes("application/json")
     @Produces("application/json")
     public Response update(Pessoa pessoa) {
@@ -50,7 +47,6 @@ public class PessoaResource {
 
     @DELETE
     @Path("/delete/{id}")
-    @Transactional
     @Produces("application/json")
     public void delete(@PathParam("id") Long id) {
         try {
@@ -62,7 +58,6 @@ public class PessoaResource {
 
     @GET
     @Path("/get/{id}")
-    @Transactional
     @Produces("application/json")
     public Pessoa getById(@PathParam("id") Long id) {
         try {
@@ -75,7 +70,6 @@ public class PessoaResource {
 
     @GET
     @Path("/getAll")
-    @Transactional
     @Produces("application/json")
     public List<Pessoa> getAll() {
         try {

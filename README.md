@@ -143,6 +143,25 @@ Os métodos realizam a chamada do repositório para realizar as operações no b
 
 ### Recurso Pessoa
 O pacote de recurso é responsável por receber as requisições HTTP e chamar os métodos do serviço.
-
+Este deve ser anotado novamanete com `@RequestScoped` para definir que o ciclo de vida de um objeto seja limitado a uma requisição.
+A classe ainda deve ser anotada com `@Path(/pessoa)` para definir o caminho do recurso.
+Deve ser realizada a injeção do serviço PessoaService para que os métodos do serviço sejam chamados.
+Os métodos devem ser anotados com `@GET`, `@POST`, `@PUT` e `@DELETE` para definir o tipo de requisição HTTP.
+Por fim, ao criar os métodos, deve ser informado o caminho do recurso e preferencialmente os tipos de conteúdos que serão consumidos e produzidos.
+```
+    @GET
+    @Path("/getAll")
+    @Produces("application/json")
+    public List<Pessoa> getAll() {
+        try {
+            return pessoaService.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+```
 
 ## Execução
+O IntelliJ IDEA possui um plugin para o Quarkus que permite a execução da aplicação Quarkus, portanto é apenas selecionar o plugin nas configurações de execução.
+Ao executar será criada a tabela de pessoa devido ao flyway e a aplicação estará disponível para acesso no endereço `http://localhost:8080` para testes do postman .
